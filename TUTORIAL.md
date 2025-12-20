@@ -30,8 +30,14 @@ K-2SO utilise vos enceintes existantes pour vous répondre :
 Ce projet s'appuie sur plusieurs composants logiciels essentiels :
 
 #### Reconnaissance et Synthèse Vocale
-*   **STT (Speech-to-Text)** : [Speech-to-Phrase](https://github.com/fwartner/home-assistant-wakewords-collection) pour la reconnaissance vocale locale.
-*   **TTS (Text-to-Speech)** : [Piper](https://github.com/rhasspy/piper) pour la synthèse vocale naturelle en français.
+*   **STT (Speech-to-Text)** : [Speech-to-Phrase](https://github.com/OHF-Voice/speech-to-phrase) - Add-on Home Assistant pour la reconnaissance vocale locale ultra-rapide.
+    *   Utilise Kaldi + FST (Finite State Transducer) pour une reconnaissance optimisée.
+    *   Entraînement automatique basé sur vos entités Home Assistant.
+    *   **Configuration critique** : 
+        - Copier les fichiers de sentences dans `/share/speech-to-phrase/custom_sentences/fr/` ET `/config/custom_sentences/fr/`
+        - Redémarrer l'add-on après chaque modification pour réentraîner le modèle
+        - Vérifier les logs de l'add-on en cas d'échec de reconnaissance
+*   **TTS (Text-to-Speech)** : [Piper](https://github.com/home-assistant/addons/tree/master/piper) - Add-on Home Assistant officiel pour la synthèse vocale naturelle en français.
 
 #### Intelligence Artificielle
 *   **Google Gemini AI** : Utilisé pour générer les réponses sarcastiques de K-2SO via le service `ai_task.generate_data`.
