@@ -1,0 +1,106 @@
+# Logique principale du système K-2SO (Phase 2)
+# Gère la détection de la pièce et l'exécution des ordres.
+
+TurnOnContextualLight:
+  action:
+    - service: script.gerer_eclairage
+      data:
+        # DATA: On transmet les informations au script de gestion centralisée :
+        # 1. 'piece' : Récupérée du capteur de présence (où se trouve l'utilisateur)
+        # 2. 'source' : On précise que c'est une commande vocale pour ignorer les blocages
+        # 3. 'action' : L'ordre à exécuter (allumer ici)
+        piece: "{{ states('sensor.presence_piece') | lower }}"
+        source: "vocal_onoff"
+        action: "on"
+    - service: script.turn_on
+      target:
+        entity_id: script.k_2so_confirm_action
+      data:
+        variables:
+          description: "allumé la lumière {{ piece }}"
+
+TurnOffContextualLight:
+  action:
+    - service: script.gerer_eclairage
+      data:
+        # DATA: Transmission des ordres au script maître :
+        # 1. 'piece' : Identifiée par présence
+        # 2. 'source' : Vocal (Priorité Haute)
+        # 3. 'action' : Éteindre
+        piece: "{{ states('sensor.presence_piece') | lower }}"
+        source: "vocal_onoff"
+        action: "off"
+    - service: script.turn_on
+      target:
+        entity_id: script.k_2so_confirm_action
+      data:
+        variables:
+          description: "éteint la lumière {{ piece }}"
+
+TurnOnContextualCover:
+  action:
+    # Action : Ouvrir le volet de la pièce actuelle
+    - service: cover.open_cover
+      target:
+        entity_id: >
+          {# CONTEXTE : On identifie la pièce puis on construit l'entity_id cible #}
+          {% set piece = states('sensor.presence_piece') | lower %}
+          cover.vol{{ piece }}
+    - service: script.turn_on
+      target:
+        entity_id: script.k_2so_confirm_action
+      data:
+        variables:
+          # VARIABLE : Information transmise au feedback vocal
+          description: "ouvert le volets {{ piece }}"
+
+TurnOffContextualCover:
+  action:
+    # Action : Fermer le volet de la pièce actuelle
+    - service: cover.close_cover
+      target:
+        entity_id: >
+          {% set piece = states('sensor.presence_piece') | lower %}
+          cover.vol{{ piece }}
+    - service: script.turn_on
+      target:
+        entity_id: script.k_2so_confirm_action
+      data:
+        variables:
+          description: "fermé le volets {{ piece }}"
+
+# Intent technique pour vérifier ce que HA voit réellement
+DiagnosticIntent:
+  action:
+    - service: script.notification_alexa
+      data:
+        message: >
+          {# DATA : Rapport brut des états pour debug sans passer par l'IA #}
+          Diagnostic final : 
+          Presence: {{ states('sensor.presence_piece') | default('aucun') }}.
+
+StartCoffee:
+  action:
+    # Action : Allumer la prise de la machine à café
+    - service: switch.turn_on
+      target:
+        entity_id: switch.priscafe # Entity ID à vérifier
+    - service: script.turn_on
+      target:
+        entity_id: script.k_2so_confirm_action
+      data:
+        variables:
+          description: "lancé le café"
+
+GoToSleep:
+  action:
+    # Action : Déclencher l'automatisation de scénario de nuit
+    - service: automation.trigger
+      target:
+        entity_id: automation.mode_dodo_2 # Entity ID à vérifier
+    - service: script.turn_on
+      target:
+        entity_id: script.k_2so_confirm_action
+      data:
+        variables:
+          description: "activé le mode dodo"
