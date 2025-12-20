@@ -17,7 +17,7 @@ TurnOnContextualLight:
         entity_id: script.k_2so_confirm_action
       data:
         variables:
-          description: "allumé la lumière {{ piece }}"
+          description: "allumé la lumière {{ states('sensor.presence_piece') | lower }}"
 
 TurnOffContextualLight:
   action:
@@ -35,7 +35,7 @@ TurnOffContextualLight:
         entity_id: script.k_2so_confirm_action
       data:
         variables:
-          description: "éteint la lumière {{ piece }}"
+          description: "éteint la lumière {{ states('sensor.presence_piece') | lower }}"
 
 TurnOnContextualCover:
   action:
@@ -51,8 +51,7 @@ TurnOnContextualCover:
         entity_id: script.k_2so_confirm_action
       data:
         variables:
-          # VARIABLE : Information transmise au feedback vocal
-          description: "ouvert le volets {{ piece }}"
+          description: "ouvert le volets {{ states('sensor.presence_piece') | lower }}"
 
 TurnOffContextualCover:
   action:
@@ -67,7 +66,7 @@ TurnOffContextualCover:
         entity_id: script.k_2so_confirm_action
       data:
         variables:
-          description: "fermé le volets {{ piece }}"
+          description: "fermé le volets {{ states('sensor.presence_piece') | lower }}"
 
 # Intent technique pour vérifier ce que HA voit réellement
 DiagnosticIntent:
@@ -75,7 +74,6 @@ DiagnosticIntent:
     - service: script.notification_alexa
       data:
         message: >
-          {# DATA : Rapport brut des états pour debug sans passer par l'IA #}
           Diagnostic final : 
           Presence: {{ states('sensor.presence_piece') | default('aucun') }}.
 
