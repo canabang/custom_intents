@@ -15,12 +15,16 @@ intents:
           - "ouvre [le|les] volet[s]"
           - "monte [le|les] volet[s]"
           - "que le jour se lève"
+          - "déploie les panneaux"
+          - "déployer boucliers thermiques"
   
   TurnOffContextualCover:
     data:
       - sentences:
           - "ferme [le|les] volet[s]"
           - "descends [le|les] volet[s]"
+          - "verrouillage de la soute"
+          - "protection anti-atomique"
           
 
   # ----------------------------------------------------------
@@ -33,6 +37,7 @@ intents:
           - "ouvre tous les volets"
           - "monte tous les volets"
           - "ouvre la maison"
+          - "déploiement général"
           
   
   TurnOffAllCovers:
@@ -43,4 +48,6 @@ intents:
           - "descends tous les volets"
           - "mode buncker"
           - "ferme la maison"
+          - "confinement total"
+          - "boucliers au maximum"
 

@@ -1,0 +1,157 @@
+# ==========================================================
+# LOGIQUE DES INTENTS - PHASE 2.1 (AVEC SCRIPT)
+# ==========================================================
+# Cette phase intègre le script 'gerer_eclairage' pour les lumières
+# afin de bénéficier de l'intelligence (scènes dynamiques).
+# ==========================================================
+
+# ----------------------------------------------------------
+# MODULE 1 : ÉCLAIRAGE (VIA SCRIPT)
+# ----------------------------------------------------------
+
+# --- CONTEXTUEL (Pièce actuelle) ---
+# Ici, on n'appelle PAS light.turn_on directement. 
+# On passe par le script qui va choisir la bonne scène selon l'heure.
+TurnOnContextualLight:
+  action:
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: script.gerer_eclairage
+      data:
+        piece: "{{ piece }}"
+        source: vocal_onoff
+        action: "on"
+        
+    - service: persistent_notification.create
+      data:
+        title: "💡 Lumière (Intelligence Script)"
+        message: "Pièce : **{{ piece }}** | Action : ON | Satellite : `{{ satellite_id }}`"
+
+TurnOffContextualLight:
+  action:
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: script.gerer_eclairage
+      data:
+        piece: "{{ piece }}"
+        source: vocal_onoff
+        action: "off"
+        
+    - service: persistent_notification.create
+      data:
+        title: "🌑 Lumière (Intelligence Script)"
+        message: "Pièce : **{{ piece }}** | Action : OFF | Satellite : `{{ satellite_id }}`"
+
+# --- GLOBAL (Toute la maison) ---
+# Comme demandé, le global reste en appel DIRECT sans passer par le script.
+TurnOnAllLights:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: light.turn_on
+      target:
+        entity_id: light.hue_all
+    - service: persistent_notification.create
+      data:
+        title: "🏠 TOUTE LA MAISON (Direct)"
+        message: "Action globale reçue via satellite : `{{ satellite_id }}`"
+
+TurnOffAllLights:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: light.turn_off
+      target:
+        entity_id: light.hue_all
+    - service: persistent_notification.create
+      data:
+        title: "🏠 TOUTE LA MAISON (Direct)"
+        message: "Action globale reçue via satellite : `{{ satellite_id }}`"
+
+
+# ----------------------------------------------------------
+# MODULE 2 : VOLETS (DIRECT)
+# ----------------------------------------------------------
+
+TurnOnContextualCover:
+  action:
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: cover.open_cover
+      target:
+        entity_id: "cover.vol{{ piece }}"
+    - service: persistent_notification.create
+      data:
+        title: "🪟 Volet Ouvert"
+        message: "Pièce : **{{ piece }}** | Satellite : `{{ satellite_id }}`"
+
+TurnOffContextualCover:
+  action:
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: cover.close_cover
+      target:
+        entity_id: "cover.vol{{ piece }}"
+    - service: persistent_notification.create
+      data:
+        title: "🪟 Volet Fermé"
+        message: "Pièce : **{{ piece }}** | Satellite : `{{ satellite_id }}`"
+
+TurnOnAllCovers:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: cover.open_cover
+      target:
+        entity_id: cover.volets
+    - service: persistent_notification.create
+      data:
+        title: "🏠 TOUS LES VOLETS Ouverts"
+        message: "Action globale reçue via satellite : `{{ satellite_id }}`"
+
+TurnOffAllCovers:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: cover.close_cover
+      target:
+        entity_id: cover.volets
+    - service: persistent_notification.create
+      data:
+        title: "🏠 TOUS LES VOLETS Fermés"
+        message: "Action globale reçue via satellite : `{{ satellite_id }}`"
+
+
+# ----------------------------------------------------------
+# MODULE 3 : RACCOURCIS (DIRECT)
+# ----------------------------------------------------------
+
+StartCoffeeLoop:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: switch.turn_on
+      target:
+        entity_id: switch.priscafe
+    - service: persistent_notification.create
+      data:
+        title: "☕ Café en préparation"
+        message: "Café lancé (switch.priscafe) | Satellite : `{{ satellite_id }}`"
+
+SetHouseToSleep:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: automation.trigger
+      target:
+        entity_id: automation.mode_dodo_2
+    - service: persistent_notification.create
+      data:
+        title: "🌙 Mode Dodo"
+        message: "Activation du dodo (automation.mode_dodo_2) | Satellite : `{{ satellite_id }}`"

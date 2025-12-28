@@ -16,6 +16,8 @@ intents:
           - "éclaire [moi]"
           - "il fait noir"
           - "lumos"
+          - "fiat lux"
+          - "que la lumière soit"
   
   TurnOffContextualLight:
     data:
@@ -24,6 +26,7 @@ intents:
           - "extinction"
           - "il va faire tout noir"
           - "nox"
+          - "bravo six going dark"
 
   # ----------------------------------------------------------
   # 2. ACTION GLOBALE : Agit sur toute la maison
@@ -35,8 +38,9 @@ intents:
           - "(allume|active|mets) toutes les lumières"
           - "allume la maison"
           - "illuminé"
+          - "activation totale"
+          - "pleine puissance"
   
-          
   TurnOffAllLights:
     data:
       - sentences:
@@ -44,3 +48,5 @@ intents:
           - "(éteins|coupe|arrête) toutes les lumières"
           - "éteins la maison"
           - "désilluminé"
+          - "blackout"
+          - "mode furtif"
