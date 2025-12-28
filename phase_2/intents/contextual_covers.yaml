@@ -1,17 +1,19 @@
 # ==========================================================
-# PHRASES : VOLETS CONTEXTUELS (PHASE 2)
+# PHRASES : VOLETS (PHASE 2)
 # ==========================================================
-# Pilotage des volets sans spécifier la pièce.
+# Distinction entre commandes locales (contextuelles) et globales.
 # ==========================================================
 
 language: "fr"
 intents:
+  # ----------------------------------------------------------
+  # 1. ACTION CONTEXTUELLE : Agit sur la pièce où vous êtes
+  # ----------------------------------------------------------
   TurnOnContextualCover:
     data:
       - sentences:
           - "ouvre [le|les] volet[s]"
           - "monte [le|les] volet[s]"
-          - "ouvre tout"
           - "que le jour se lève"
   
   TurnOffContextualCover:
@@ -19,5 +21,26 @@ intents:
       - sentences:
           - "ferme [le|les] volet[s]"
           - "descends [le|les] volet[s]"
+          
+
+  # ----------------------------------------------------------
+  # 2. ACTION GLOBALE : Agit sur toute la maison
+  # ----------------------------------------------------------
+  TurnOnAllCovers:
+    data:
+      - sentences:
+          - "ouvre tout"
+          - "ouvre tous les volets"
+          - "monte tous les volets"
+          - "ouvre la maison"
+          
+  
+  TurnOffAllCovers:
+    data:
+      - sentences:
           - "ferme tout"
+          - "ferme tous les volets"
+          - "descends tous les volets"
           - "mode buncker"
+          - "ferme la maison"
+

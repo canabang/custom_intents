@@ -1,27 +1,22 @@
 # ==========================================================
-# LOGIQUE DES INTENTS - PHASE 2 (MODULAIRE)
+# LOGIQUE DES INTENTS - PHASE 2 (MODULAIRE & GLOBAL)
 # ==========================================================
-# Ce fichier traite les ordres reçus après la reconnaissance vocale.
-# Il utilise le contexte (quelle pièce a parlé) pour agir.
+# Gère le multi-pièces (via satellite) et le global (via groupes).
 # ==========================================================
 
 # ----------------------------------------------------------
-# MODULE 1 : ÉCLAIRAGE CONTEXTUEL
+# MODULE 1 : ÉCLAIRAGE
 # ----------------------------------------------------------
 
+# --- CONTEXTUEL (Pièce actuelle) ---
 TurnOnContextualLight:
   action:
-    # 1. On récupère la pièce mémorisée par le sensor de satellite
     - variables:
         piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
-    
-    # 2. On allume la lumière correspondante (Pattern: light.hue_<piece>)
     - service: light.turn_on
       target:
         entity_id: "light.hue_{{ piece }}"
-    
-    # 3. Notification HA pour confirmer que la détection a fonctionné
     - service: persistent_notification.create
       data:
         title: "💡 Lumière Allumée"
@@ -32,31 +27,57 @@ TurnOffContextualLight:
     - variables:
         piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
-    
     - service: light.turn_off
       target:
         entity_id: "light.hue_{{ piece }}"
-        
     - service: persistent_notification.create
       data:
         title: "🌑 Lumière Éteinte"
         message: "Pièce : **{{ piece }}** | Satellite : `{{ satellite_id }}`"
 
+# --- GLOBAL (Toute la maison) ---
+TurnOnAllLights:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    # --- À ADAPTER : Remplacez par votre groupe de lumières global ---
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+    # --------------------------------------------------------------
+    - service: persistent_notification.create
+      data:
+        title: "🏠 TOUTE LA MAISON Allumée"
+        message: "Action globale reçue via satellite : `{{ satellite_id }}`"
+
+TurnOffAllLights:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    # --- À ADAPTER : Remplacez par votre groupe de lumières global ---
+    - service: light.turn_off
+      target:
+        entity_id: light.all_lights
+    # --------------------------------------------------------------
+    - service: persistent_notification.create
+      data:
+        title: "🏠 TOUTE LA MAISON Éteinte"
+        message: "Action globale reçue via satellite : `{{ satellite_id }}`"
+
+
 # ----------------------------------------------------------
-# MODULE 2 : VOLETS CONTEXTUELS
+# MODULE 2 : VOLETS
 # ----------------------------------------------------------
 
+# --- CONTEXTUEL (Pièce actuelle) ---
 TurnOnContextualCover:
   action:
     - variables:
         piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
-    
-    # On ouvre le volet correspondant (Pattern: cover.vol<piece>)
     - service: cover.open_cover
       target:
         entity_id: "cover.vol{{ piece }}"
-        
     - service: persistent_notification.create
       data:
         title: "🪟 Volet Ouvert"
@@ -67,16 +88,43 @@ TurnOffContextualCover:
     - variables:
         piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
-    
-    # On ferme le volet correspondant
     - service: cover.close_cover
       target:
         entity_id: "cover.vol{{ piece }}"
-        
     - service: persistent_notification.create
       data:
         title: "🪟 Volet Fermé"
         message: "Pièce : **{{ piece }}** | Satellite : `{{ satellite_id }}`"
+
+# --- GLOBAL (Toute la maison) ---
+TurnOnAllCovers:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    # --- À ADAPTER : Remplacez par votre groupe de volets global ---
+    - service: cover.open_cover
+      target:
+        entity_id: cover.all_covers
+    # --------------------------------------------------------------
+    - service: persistent_notification.create
+      data:
+        title: "🏠 TOUS LES VOLETS Ouverts"
+        message: "Action globale reçue via satellite : `{{ satellite_id }}`"
+
+TurnOffAllCovers:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    # --- À ADAPTER : Remplacez par votre groupe de volets global ---
+    - service: cover.close_cover
+      target:
+        entity_id: cover.all_covers
+    # --------------------------------------------------------------
+    - service: persistent_notification.create
+      data:
+        title: "🏠 TOUS LES VOLETS Fermés"
+        message: "Action globale reçue via satellite : `{{ satellite_id }}`"
+
 
 # ----------------------------------------------------------
 # MODULE 3 : RACCOURCIS (SHORTCUTS)
@@ -86,12 +134,9 @@ StartCoffeeLoop:
   action:
     - variables:
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
-    
-    # On active la prise de la machine à café
     - service: switch.turn_on
       target:
         entity_id: switch.priscafe
-        
     - service: persistent_notification.create
       data:
         title: "☕ Café en préparation"
@@ -101,12 +146,9 @@ SetHouseToSleep:
   action:
     - variables:
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
-    
-    # On déclenche une automatisation globale de mise en sommeil
     - service: automation.trigger
       target:
         entity_id: automation.mode_dodo_2
-        
     - service: persistent_notification.create
       data:
         title: "🌙 Mode Dodo"

@@ -1,17 +1,17 @@
 # ==========================================================
-# PHRASES : LUMIÈRES CONTEXTUELLES (PHASE 2)
+# PHRASES : LUMIÈRES (PHASE 2)
 # ==========================================================
-# Ces phrases sont génériques : elles ne mentionnent pas de pièce.
-# C'est le système qui détecte la pièce via le satellite.
+# Distinction entre commandes locales (contextuelles) et globales.
 # ==========================================================
 
 language: "fr"
 intents:
+  # ----------------------------------------------------------
+  # 1. ACTION CONTEXTUELLE : Agit sur la pièce où vous êtes
+  # ----------------------------------------------------------
   TurnOnContextualLight:
     data:
       - sentences:
-          # Syntaxe (A|B) : choix obligatoire entre A ou B
-          # Syntaxe [A] : le mot A est optionnel
           - "(allume|active|mets) [la] lumière"
           - "éclaire [moi]"
           - "il fait noir"
@@ -24,3 +24,23 @@ intents:
           - "extinction"
           - "il va faire tout noir"
           - "nox"
+
+  # ----------------------------------------------------------
+  # 2. ACTION GLOBALE : Agit sur toute la maison
+  # ----------------------------------------------------------
+  TurnOnAllLights:
+    data:
+      - sentences:
+          - "(allume|active|mets) tout"
+          - "(allume|active|mets) toutes les lumières"
+          - "allume la maison"
+          - "illuminé"
+  
+          
+  TurnOffAllLights:
+    data:
+      - sentences:
+          - "(éteins|coupe|arrête) tout"
+          - "(éteins|coupe|arrête) toutes les lumières"
+          - "éteins la maison"
+          - "désilluminé"
