@@ -20,7 +20,18 @@ graph TD
     F -->|Notification| H["📱 App HA / Persistent Notif"]
 ```
 
+> [!TIP]
+> **Architecture Hybride** : Ce projet utilise une écoute 100% locale (ESP32) pour la fiabilité, mais peut utiliser le Cloud (Alexa) pour la sortie audio haute qualité. 
+> [En savoir plus sur l'Architecture Vocale](./docs/architecture_vocale.md)
+
 ## 🗺️ La Route vers l'Automatisation Totale
+
+### 📖 Concepts Fondamentaux
+Avant de commencer, il est crucial de comprendre les piliers du projet :
+- **[Conventions de Nommage](./docs/conventions_nommage.md)** : La règle d'or pour que le contexte fonctionne.
+- **[Architecture Vocale](./docs/architecture_vocale.md)** : Pourquoi le local est roi.
+
+---
 
 | Phase | Nom | Focus | Fonctionnalité Clé |
 | :--- | :--- | :--- | :--- |
