@@ -43,7 +43,7 @@ Redémarrez Home Assistant (ou rechargez les "Intents" et les "Templates").
 ## 🧪 Tests de Validation
 
 ### Test A : Le Micro Fonctionne
-Dites : **"Banane"**.
+Dites : **"jaffa kree"**.
 - ✅ La lumière du **Salon** s'allume.
 - ✅ Une notification HA confirme l'ordre.
 

@@ -40,10 +40,10 @@ Pour que les commandes "maison" (globales) fonctionnent, vous devez créer deux 
 ## 🧪 Tests Geek
 Le système intègre des phrases de déclenchement à connotation geek pour plus de fun :
 
-- 💡 **Lumières** : *"Lumos"*, *"Fiat Lux"*, *"Bravo Six going dark"*.
-- 🏠 **Global** : *"Activation totale"*, *"Blackout"*, *"Mode furtif"*.
-- 🪟 **Volets** : *"Que le jour se lève"*, *"Boucliers au maximum"*, *"Mode Bunker"*.
-- ☕ **Shortcuts** : *"Overclocking humain"*, *"Syntax error: need coffee"*, *"Hibernation"*.
+- 💡 **Lumières** : *"Lumos"*, *"Jaffa Kree"*, *"Engagez"*, *"Bravo six, passage au noir"*.
+- 🏠 **Global** : *"Activation totale"*, *"Blackout"*, *"Mode furtif"*, *"Pleine puissance"*.
+- 🪟 **Volets** : *"Que le jour se lève"*, *"Ouvrez l'iris"*, *"Levez les boucliers"*, *"Protocole Bunker"*.
+- ☕ **Shortcuts** : *"Overclocking humain"*, *"Erreur de syntaxe : café requis"*, *"Entrée en stase"*.
 
 ---
 

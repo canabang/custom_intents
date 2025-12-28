@@ -24,7 +24,7 @@ Contrairement à la Phase 2 qui faisait un simple "ON/OFF", la Phase 2.1 utilise
 1.  **Script** : Importez le contenu de `gerer_eclairage.yaml` dans vos scripts HA.
 2.  **Intents** : Utilisez le `intent_scripts.yaml` de ce dossier.
 3.  **Sentences** : Reprenez les fichiers de la Phase 2.
-4.  **Helpers** : Assurez-vous d'avoir bien vos groupes `light.hue_all` et `cover.volets`.
+4.  **Helpers** : Assurez-vous d'avoir bien vos groupes `light.hue_all` et `cover.volets` ou le nom que vous avez choisi.
 
 ---
 
