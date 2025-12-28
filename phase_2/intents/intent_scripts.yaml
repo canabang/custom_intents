@@ -43,7 +43,7 @@ TurnOnAllLights:
     # --- À ADAPTER : Remplacez par votre groupe de lumières global ---
     - service: light.turn_on
       target:
-        entity_id: light.all_lights
+        entity_id: light.hue_all
     # --------------------------------------------------------------
     - service: persistent_notification.create
       data:
@@ -57,7 +57,7 @@ TurnOffAllLights:
     # --- À ADAPTER : Remplacez par votre groupe de lumières global ---
     - service: light.turn_off
       target:
-        entity_id: light.all_lights
+        entity_id: light.hue_all
     # --------------------------------------------------------------
     - service: persistent_notification.create
       data:
@@ -104,7 +104,7 @@ TurnOnAllCovers:
     # --- À ADAPTER : Remplacez par votre groupe de volets global ---
     - service: cover.open_cover
       target:
-        entity_id: cover.all_covers
+        entity_id: cover.volets
     # --------------------------------------------------------------
     - service: persistent_notification.create
       data:
@@ -118,7 +118,7 @@ TurnOffAllCovers:
     # --- À ADAPTER : Remplacez par votre groupe de volets global ---
     - service: cover.close_cover
       target:
-        entity_id: cover.all_covers
+        entity_id: cover.volets
     # --------------------------------------------------------------
     - service: persistent_notification.create
       data:
