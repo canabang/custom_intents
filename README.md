@@ -8,13 +8,13 @@ Voici comment les données circulent entre votre voix et vos appareils :
 
 ```mermaid
 graph TD
-    A[🎤 Voix (Utilisateur)] -->|Commande| B(🛰️ Satellites ESPHome)
-    B -->|Audio| C[🏠 HA Assist / Whisper]
-    C -->|Texte| D{🎯 Matcher d'Intents}
-    D -->|Pièce Détectée| E[🧠 Template : Satellite Mémorisé]
-    E -->|Context| F[📜 Intent Scripts]
-    F -->|Action| G[💡 Appareils / Lumières / Volets]
-    F -->|Notification| H[📱 App HA / Persistent Notif]
+    A["🎤 Voix (Utilisateur)"] -->|Commande| B["🛰️ Satellites ESPHome"]
+    B -->|Audio| C["🏠 HA Assist / Whisper"]
+    C -->|Texte| D{"🎯 Matcher d'Intents"}
+    D -->|Pièce Détectée| E["🧠 Template : Satellite Mémorisé"]
+    E -->|Contexte| F["📜 Intent Scripts"]
+    F -->|Action| G["💡 Appareils / Lumières / Volets"]
+    F -->|Notification| H["📱 App HA / Persistent Notif"]
 ```
 
 ## 🗺️ La Route vers l'Automatisation Totale
