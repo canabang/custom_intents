@@ -12,7 +12,7 @@ Cette phase est conçue pour valider votre installation vocale le plus rapidemen
     *   `intent_scripts.yaml` : Logique d'action directe et validation satellite.
 *   **[`Templates/`](./Templates/)** :
     *   `satellite_actif_memorise.yaml` : Détection automatique du satellite qui écoute.
-     Pourquoi ce template ? Je n'ai pas réussi a recuperer directement le nom du satellite qui écoute dans le trigger. Du coup avec ce template, je peux recuperer le nom du satellite qui écoute et le stocker dans une variable.
+     Pourquoi ce template ? Je n'ai pas réussi a récupérer directement le nom du satellite qui écoute dans le trigger. Du coup avec ce template, je peux récupérer le nom du satellite qui écoute et le stocker dans une variable.
 
 ## 🚀 Procédure "Express" (2 minutes)
 
@@ -30,8 +30,8 @@ intent_script: !include intent_scripts.yaml
 template: !include template.yaml
 ```
 
-1.  Copiez le contenu de `intents/intent_scripts.yaml` dans votre fichier `/config/intent_scripts.yaml` a creer si necessaire   .
-2.  Copiez le contenu de `Templates/satellite_actif_memorise.yaml` dans votre fichier `/config/template.yaml` a creer si necessaire.
+1.  Copiez le contenu de `intents/intent_scripts.yaml` dans votre fichier `/config/intent_scripts.yaml` à créer si nécessaire.
+2.  Copiez le contenu de `Templates/satellite_actif_memorise.yaml` dans votre fichier `/config/template.yaml` à créer si nécessaire.
 
 ### 3. Redémarrage
 Redémarrez Home Assistant (ou rechargez les "Intents" et les "Templates").
