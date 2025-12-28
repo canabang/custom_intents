@@ -1,8 +1,8 @@
 # ==========================================================
 # LOGIQUE DES INTENTS - PHASE 2 (MODULAIRE)
 # ==========================================================
-# Gère le multi-pièces via détection dynamique du satellite.
-# Actions directes + Notifications HA (Pas d'Alexa/IA).
+# Ce fichier traite les ordres reçus après la reconnaissance vocale.
+# Il utilise le contexte (quelle pièce a parlé) pour agir.
 # ==========================================================
 
 # ----------------------------------------------------------
@@ -11,12 +11,17 @@
 
 TurnOnContextualLight:
   action:
+    # 1. On récupère la pièce mémorisée par le sensor de satellite
     - variables:
         piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    # 2. On allume la lumière correspondante (Pattern: light.hue_<piece>)
     - service: light.turn_on
       target:
         entity_id: "light.hue_{{ piece }}"
+    
+    # 3. Notification HA pour confirmer que la détection a fonctionné
     - service: persistent_notification.create
       data:
         title: "💡 Lumière Allumée"
@@ -27,9 +32,11 @@ TurnOffContextualLight:
     - variables:
         piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
     - service: light.turn_off
       target:
         entity_id: "light.hue_{{ piece }}"
+        
     - service: persistent_notification.create
       data:
         title: "🌑 Lumière Éteinte"
@@ -44,9 +51,12 @@ TurnOnContextualCover:
     - variables:
         piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    # On ouvre le volet correspondant (Pattern: cover.vol<piece>)
     - service: cover.open_cover
       target:
         entity_id: "cover.vol{{ piece }}"
+        
     - service: persistent_notification.create
       data:
         title: "🪟 Volet Ouvert"
@@ -57,9 +67,12 @@ TurnOffContextualCover:
     - variables:
         piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    # On ferme le volet correspondant
     - service: cover.close_cover
       target:
         entity_id: "cover.vol{{ piece }}"
+        
     - service: persistent_notification.create
       data:
         title: "🪟 Volet Fermé"
@@ -73,9 +86,12 @@ StartCoffeeLoop:
   action:
     - variables:
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    # On active la prise de la machine à café
     - service: switch.turn_on
       target:
         entity_id: switch.priscafe
+        
     - service: persistent_notification.create
       data:
         title: "☕ Café en préparation"
@@ -85,9 +101,12 @@ SetHouseToSleep:
   action:
     - variables:
         satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    # On déclenche une automatisation globale de mise en sommeil
     - service: automation.trigger
       target:
         entity_id: automation.mode_dodo_2
+        
     - service: persistent_notification.create
       data:
         title: "🌙 Mode Dodo"

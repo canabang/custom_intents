@@ -1,3 +1,9 @@
+# ==========================================================
+# PHRASES : RACCOURCIS & ROUTINES (PHASE 2)
+# ==========================================================
+# Commandes rapides pour les actions quotidiennes.
+# ==========================================================
+
 language: "fr"
 intents:
   StartCoffeeLoop:

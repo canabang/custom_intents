@@ -13,7 +13,7 @@ Cette phase transforme votre base technique en un système **intelligent et cont
     *   `satellite_actif_memorise.yaml` : Le cerveau qui mémorise quelle pièce a parlé.
 
 ## 🚀 Logique de Naming (CRITIQUE)
-Le système repose sur une convention de nommage stricte. Pour que la détection automatique fonctionne, vos entités **doivent** suivre ce format ou un format similaire , a vous d'adapter en conséquence :
+Le système repose sur une convention de nommage stricte. Pour que la détection automatique fonctionne, vos entités **doivent** suivre ce format ou un format similaire , à vous d'adapter en conséquence :
 
 - **Lumières** : `light.hue_<piece>` (ex : `light.hue_salon`, `light.hue_cuisine`)
 - **Volets** : `cover.vol<piece>` (ex : `cover.volsalon`, `cover.volcuisine`)

@@ -1,3 +1,9 @@
+# ==========================================================
+# PHRASES : VOLETS CONTEXTUELS (PHASE 2)
+# ==========================================================
+# Pilotage des volets sans spécifier la pièce.
+# ==========================================================
+
 language: "fr"
 intents:
   TurnOnContextualCover:

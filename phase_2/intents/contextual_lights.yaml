@@ -1,8 +1,17 @@
+# ==========================================================
+# PHRASES : LUMIÈRES CONTEXTUELLES (PHASE 2)
+# ==========================================================
+# Ces phrases sont génériques : elles ne mentionnent pas de pièce.
+# C'est le système qui détecte la pièce via le satellite.
+# ==========================================================
+
 language: "fr"
 intents:
   TurnOnContextualLight:
     data:
       - sentences:
+          # Syntaxe (A|B) : choix obligatoire entre A ou B
+          # Syntaxe [A] : le mot A est optionnel
           - "(allume|active|mets) [la] lumière"
           - "éclaire [moi]"
           - "il fait noir"
