@@ -47,4 +47,16 @@ Le système intègre des phrases de déclenchement à connotation geek pour plus
 
 ---
 
-**Félicitations ! Votre maison est maintenant contextuelle et prête pour la Phase 3 (IA & K-2SO).** 🤖💎
+## 🏁 Conclusion de la Phase 2
+
+À ce stade, vous disposez d'un système **pleinement fonctionnel**. Votre maison comprend où vous êtes et réagit intelligemment à vos commandes vocales et à vos raccourcis. C'est déjà une victoire majeure pour votre confort quotidien.
+
+**Mais on peut encore monter en grade...** 🚀
+
+Imaginez la scène : vous vous levez en pleine nuit pour aller boire un verre d'eau (ou rendre son eau au dragon 🐉). Vous dites *"Lumos"*, et là... l'éclairage se met à briller avec l'intensité des deux soleils de **Tatooine** ☀️☀️. Vos rétines ne vous disent pas merci.
+
+Idéalement, ne serait-il pas plus agréable que la lumière s'adapte à l'heure, à votre état (réveillé ou dodo) ou même à la luminosité ambiante ?
+
+**C'est tout l'objet de la suite de l'aventure : en route vers l'intelligence de bord !**
+
+**[Prêt pour la suite ? Direction la Phase 2.1 !](../phase_2.1/)** 🤖💎

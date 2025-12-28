@@ -1,0 +1,43 @@
+# ==========================================================
+# INFRASTRUCTURE POUR L'INTELLIGENCE D'ÉCLAIRAGE
+# ==========================================================
+# Ces éléments sont nécessaires pour que le script 'gerer_eclairage' 
+# puisse calculer le temps écoulé et choisir la bonne scène.
+# ==========================================================
+
+# 1. INPUT DATETIME : Mémorise le moment du passage Éveillé <-> Dodo
+# À ajouter dans votre input_datetime.yaml
+dernier_changement_jour_nuit:
+  name: Dernier Changement Jour/Nuit
+  has_date: true
+  has_time: true
+
+# 2. INPUT TEXT : État actuel du cycle personnel
+# JOUR = Éveillé | NUIT = Mode Dodo
+# À ajouter dans votre input_text.yaml
+jour_nuit:
+  name: État Jour/Nuit
+  initial: jour
+  options:
+    - jour
+    - nuit
+
+# 3. SENSORS : Transformation en entités lisibles
+# À ajouter dans votre template.yaml
+- sensor:
+    - name: "Dernier Changement Jour/Nuit"
+      unique_id: dernier_changement_jour_nuit_sensor
+      state: "{{ state_attr('input_datetime.dernier_changement_jour_nuit', 'datetime') }}"
+
+# 4. AUTOMATISATION : Mise à jour du temps (Optionnel mais recommandé)
+# Cette automatisation force la mise à jour des sensors temporels.
+alias: Mise à Jour Temps écoulé changement jour/nuit
+description: Force le rafraîchissement des sensors toutes les 5 minutes
+trigger:
+  - platform: time_pattern
+    minutes: "/5"
+action:
+  - action: homeassistant.update_entity
+    target:
+      entity_id: sensor.dernier_changement_jour_nuit
+mode: single

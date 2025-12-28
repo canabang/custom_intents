@@ -1,29 +1,31 @@
-# ==========================================================
+# ==============================================================================
 # SCRIPT CENTRAL DE GESTION D’ÉCLAIRAGE
-# ==========================================================
-# Ce script est l'intelligence centrale qui pilote toutes les lumières Hue.
-# Il est conçu pour être appelé par :
-#   1. Les Intents Vocaux (Phase 1 & 2) -> source: vocal_onoff
-#   2. Les Automatisations de présence  -> source: presence / absence
-# ==========================================================
+# ==============================================================================
+# Ce script est le cerveau qui orchestre l'éclairage de toute la maison.
+# Il centralise les décisions pour éviter les conflits entre les commandes 
+# vocales, les automatismes de présence et les cycles jour/nuit.
+# ==============================================================================
 
 alias: Gérer Éclairage
 description: >-
-  Gère l'éclairage intelligemment : Priorité vocale, calcul de scène dynamique 
-  (jour/nuit/réveil) et gestion des blocages (lit occupé, SdB, etc).
+  Intelligence centrale d'éclairage : 
+  1. Calcule la scène idéale (Veilleuse/Atténué/Stimulation) selon l'heure.
+  2. Gère les priorités (Le vocal est toujours prioritaire sur le capteur).
+  3. Applique des sécurités (Ne rien faire si on n'est pas à la maison).
+  4. Gère les exceptions (Ne pas allumer la chambre si quelqu'un dort).
 
-# FIELDS : Définition des paramètres d'entrée
+# --- PARAMÈTRES REÇUS LORS DE L'APPEL ---
 fields:
   piece:
-    description: "Le nom de la pièce cible (ex: chambre, salon, cuisine, sdb)"
-    example: chambre
+    description: "La pièce où agir (doit correspondre au suffixe des entités : salon, cuisine, etc.)"
+    example: "salon"
     required: true
   source:
-    description: "D'où vient l'appel (vocal_onoff, presence, absence)"
-    example: vocal_onoff
+    description: "Origine du signal : 'vocal_onoff' (Prioritaire), 'presence' ou 'absence'."
+    example: "vocal_onoff"
     required: true
   action:
-    description: "L'ordre spécifique pour le vocal (on, off, toggle)"
+    description: "Pour le vocal uniquement : 'on', 'off' ou 'toggle'."
     example: "on"
     required: false
 
@@ -33,16 +35,24 @@ sequence:
   - condition: template
     value_template: "{{ states('sensor.etat_canabang_et_device_tracker') == 'home' }}"
   
-  # ÉTAPE 1 : Préparation des variables
-  # VARIABLE : On calcule ici tout ce qui servira à prendre une décision.
+  # ----------------------------------------------------------------------------
+  # ÉTAPE 1 : PRÉPARATION ET CALCULS DYNAMIQUES
+  # ----------------------------------------------------------------------------
   - variables:
-      light_entity: light.hue_{{ piece }}
+      # Reconstruction dynamique de l'entité cible (ex: light.hue_salon)
+      light_entity: "light.hue_{{ piece }}"
       is_light_on: "{{ is_state('light.hue_' + piece, 'on') }}"
+      
+      # Récupération de l'état global Jour/Nuit (via un input_text personnalisé)
       mode_nuit: "{{ is_state('input_text.jour_nuit', 'nuit') }}"
+      
+      # Vérification de l'élévation du soleil
       soleil_visible: "{{ state_attr('sun.sun', 'elevation') > 0 }}"
       
-      # LOGIQUE : CALCUL DE LA SCÈNE IDÉALE
+      # CALCUL DE LA SCÈNE IDÉALE (Le Cœur du script) :
+      # On cherche à savoir s'il faut allumer en mode Veilleuse, Atténué ou Stimulation.
       scene_a_activer: >
+        {# On vérifie depuis combien de temps le mode 'Jour' ou 'Nuit' a changé #}
         {% set dernier_changement_str = states('input_datetime.dernier_changement_jour_nuit') | default('1970-01-01 00:00:00') %}
         {% set maintenant_ts = as_timestamp(now()) %}
         {% if dernier_changement_str != 'unknown' and dernier_changement_str != 'unavailable' %}
@@ -52,11 +62,14 @@ sequence:
           {% set delta_minutes = 99999 %}
         {% endif %}
 
-        {# CHOIX FINAL : #}
+        {# LOGIQUE DE SÉLECTION : #}
+        {# 1. Si on est en mode nuit OU que le jour vient de se lever depuis < 15 min (Réveil) -> VEILLEUSE #}
         {% if mode_nuit or (not mode_nuit and delta_minutes < 15) %}
           scene.hue_{{ piece }}_1_veilleuse
+        {# 2. Si le soleil est couché (Soirée) -> ATTÉNUÉ #}
         {% elif not soleil_visible %}
           scene.hue_{{ piece }}_3_attenue
+        {# 3. Sinon (Plein jour) -> STIMULATION #}
         {% else %}
           scene.hue_{{ piece }}_2_stimulation
         {% endif %}
@@ -100,15 +113,16 @@ sequence:
                       entity_id: "{{ scene_a_activer }}"
                     action: scene.turn_on
 
-      # ------------------------------------------------------------------
-      # CAS B : PRÉSENCE CAPTEUR (Détection de mouvement)
-      # ------------------------------------------------------------------
+      # ----------------------------------------------------------------------------
+      # CAS B : DÉTECTION DE PRÉSENCE (Automatisme)
+      # ----------------------------------------------------------------------------
       - conditions:
           - condition: template
             value_template: "{{ source == 'presence' }}"
         sequence:
+          # ÉTAPE : VÉRIFICATION DES BLOCAGES (Ne pas importuner l'utilisateur)
           - choose:
-              # LOGIQUE DE BLOCAGE :
+              # BLOCAGE 1 : CHAMBRE (Si le mode nuit est actif ou si quelqu'un est dans le lit)
               - conditions:
                   - condition: template
                     value_template: "{{ piece == 'chambre' }}"
@@ -120,8 +134,9 @@ sequence:
                         entity_id: binary_sensor.esp_bed_occupation_master_bed_occupied
                         state: "on"
                 sequence:
-                  - stop: "Arrêt : Chambre occupée/repos."
+                  - stop: "Blocage Sécurité : On ne réveille pas les dormeurs dans la chambre."
               
+              # BLOCAGE 2 : SALLE DE BAIN (Si on est déjà dedans ou que la lumière est forte)
               - conditions:
                   - condition: template
                     value_template: "{{ piece == 'sdb' }}"
@@ -134,10 +149,11 @@ sequence:
                         entity_id: sensor.lux_sdb
                         above: 2
                 sequence:
-                  - stop: "Arrêt : SdB déjà éclairée/occupée."
+                  - stop: "Blocage Sécurité : SdB déjà occupée ou luminosité suffisante."
           
-          # Si pas de blocage : On allume
+          # ACTIONS SI PAS DE BLOCAGE
           - choose:
+              # On n'allume que si c'est éteint pour ne pas écraser une scène réglée manuellement
               - conditions:
                   - condition: template
                     value_template: "{{ not is_light_on }}"
