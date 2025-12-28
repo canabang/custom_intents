@@ -1,104 +1,94 @@
-# Logique principale du système K-2SO (Phase 2)
-# Gère la détection de la pièce et l'exécution des ordres.
+# ==========================================================
+# LOGIQUE DES INTENTS - PHASE 2 (MODULAIRE)
+# ==========================================================
+# Gère le multi-pièces via détection dynamique du satellite.
+# Actions directes + Notifications HA (Pas d'Alexa/IA).
+# ==========================================================
+
+# ----------------------------------------------------------
+# MODULE 1 : ÉCLAIRAGE CONTEXTUEL
+# ----------------------------------------------------------
 
 TurnOnContextualLight:
   action:
-    - service: script.gerer_eclairage
-      data:
-        # DATA: On transmet les informations au script de gestion centralisée :
-        # 1. 'piece' : Récupérée du capteur de présence (où se trouve l'utilisateur)
-        # 2. 'source' : On précise que c'est une commande vocale pour ignorer les blocages
-        # 3. 'action' : L'ordre à exécuter (allumer ici)
-        piece: "{{ states('sensor.presence_piece') | lower }}"
-        source: "vocal_onoff"
-        action: "on"
-    - service: script.turn_on
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: light.turn_on
       target:
-        entity_id: script.k_2so_confirm_action
+        entity_id: "light.hue_{{ piece }}"
+    - service: persistent_notification.create
       data:
-        variables:
-          description: "allumé la lumière {{ states('sensor.presence_piece') | lower }}"
+        title: "💡 Lumière Allumée"
+        message: "Pièce : **{{ piece }}** | Satellite : `{{ satellite_id }}`"
 
 TurnOffContextualLight:
   action:
-    - service: script.gerer_eclairage
-      data:
-        # DATA: Transmission des ordres au script maître :
-        # 1. 'piece' : Identifiée par présence
-        # 2. 'source' : Vocal (Priorité Haute)
-        # 3. 'action' : Éteindre
-        piece: "{{ states('sensor.presence_piece') | lower }}"
-        source: "vocal_onoff"
-        action: "off"
-    - service: script.turn_on
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    - service: light.turn_off
       target:
-        entity_id: script.k_2so_confirm_action
+        entity_id: "light.hue_{{ piece }}"
+    - service: persistent_notification.create
       data:
-        variables:
-          description: "éteint la lumière {{ states('sensor.presence_piece') | lower }}"
+        title: "🌑 Lumière Éteinte"
+        message: "Pièce : **{{ piece }}** | Satellite : `{{ satellite_id }}`"
+
+# ----------------------------------------------------------
+# MODULE 2 : VOLETS CONTEXTUELS
+# ----------------------------------------------------------
 
 TurnOnContextualCover:
   action:
-    # Action : Ouvrir le volet de la pièce actuelle
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
     - service: cover.open_cover
       target:
-        entity_id: >
-          {# CONTEXTE : On identifie la pièce puis on construit l'entity_id cible #}
-          {% set piece = states('sensor.presence_piece') | lower %}
-          cover.vol{{ piece }}
-    - service: script.turn_on
-      target:
-        entity_id: script.k_2so_confirm_action
+        entity_id: "cover.vol{{ piece }}"
+    - service: persistent_notification.create
       data:
-        variables:
-          description: "ouvert le volets {{ states('sensor.presence_piece') | lower }}"
+        title: "🪟 Volet Ouvert"
+        message: "Pièce : **{{ piece }}** | Satellite : `{{ satellite_id }}`"
 
 TurnOffContextualCover:
   action:
-    # Action : Fermer le volet de la pièce actuelle
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
     - service: cover.close_cover
       target:
-        entity_id: >
-          {% set piece = states('sensor.presence_piece') | lower %}
-          cover.vol{{ piece }}
-    - service: script.turn_on
-      target:
-        entity_id: script.k_2so_confirm_action
+        entity_id: "cover.vol{{ piece }}"
+    - service: persistent_notification.create
       data:
-        variables:
-          description: "fermé le volets {{ states('sensor.presence_piece') | lower }}"
+        title: "🪟 Volet Fermé"
+        message: "Pièce : **{{ piece }}** | Satellite : `{{ satellite_id }}`"
 
-# Intent technique pour vérifier ce que HA voit réellement
-DiagnosticIntent:
-  action:
-    - service: script.notification_alexa
-      data:
-        message: >
-          Diagnostic final : 
-          Presence: {{ states('sensor.presence_piece') | default('aucun') }}.
+# ----------------------------------------------------------
+# MODULE 3 : RACCOURCIS (SHORTCUTS)
+# ----------------------------------------------------------
 
-StartCoffee:
+StartCoffeeLoop:
   action:
-    # Action : Allumer la prise de la machine à café
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
     - service: switch.turn_on
       target:
-        entity_id: switch.priscafe # Entity ID à vérifier
-    - service: script.turn_on
-      target:
-        entity_id: script.k_2so_confirm_action
+        entity_id: switch.priscafe
+    - service: persistent_notification.create
       data:
-        variables:
-          description: "lancé le café"
+        title: "☕ Café en préparation"
+        message: "Café lancé (switch.priscafe) | Satellite : `{{ satellite_id }}`"
 
-GoToSleep:
+SetHouseToSleep:
   action:
-    # Action : Déclencher l'automatisation de scénario de nuit
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
     - service: automation.trigger
       target:
-        entity_id: automation.mode_dodo_2 # Entity ID à vérifier
-    - service: script.turn_on
-      target:
-        entity_id: script.k_2so_confirm_action
+        entity_id: automation.mode_dodo_2
+    - service: persistent_notification.create
       data:
-        variables:
-          description: "activé le mode dodo"
+        title: "🌙 Mode Dodo"
+        message: "Activation du dodo (automation.mode_dodo_2) | Satellite : `{{ satellite_id }}`"

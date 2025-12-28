@@ -1,0 +1,43 @@
+# ==========================================================
+# SENSOR : DÉTECTION DU SATELLITE EN ÉCOUTE (PHASE 2)
+# ==========================================================
+
+- trigger:
+    - platform: state
+      entity_id:
+        - assist_satellite.esp_va_salon_satellite_assist
+        - assist_satellite.esp_va_cuisine_satellite_assist
+        - assist_satellite.esp_va_chambre_satellite_assist
+        - assist_satellite.esp_va_sdb_satellite_assist
+      to: "listening"
+  
+  sensor:
+    - name: "Satellite Actif Mémorisé"
+      unique_id: satellite_actif_memorise
+      state: >
+        {% set satellites = {
+          'assist_satellite.esp_va_salon_satellite_assist': 'salon',
+          'assist_satellite.esp_va_cuisine_satellite_assist': 'cuisine',
+          'assist_satellite.esp_va_chambre_satellite_assist': 'chambre',
+          'assist_satellite.esp_va_sdb_satellite_assist': 'sdb'
+        } %}
+        {{ satellites.get(trigger.entity_id, 'inconnu') }}
+      
+      attributes:
+        satellite_id: "{{ trigger.entity_id }}"
+        timestamp: "{{ now().isoformat() }}"
+        echo: >
+          {% set echo_map = {
+            'salon': 'media_player.echo_studio_d',
+            'cuisine': 'media_player.echo_show_cuisine',
+            'chambre': 'media_player.echo_show_chambre',
+            'sdb': 'media_player.echo_sdb'
+          } %}
+          {% set satellites = {
+            'assist_satellite.esp_va_salon_satellite_assist': 'salon',
+            'assist_satellite.esp_va_cuisine_satellite_assist': 'cuisine',
+            'assist_satellite.esp_va_chambre_satellite_assist': 'chambre',
+            'assist_satellite.esp_va_sdb_satellite_assist': 'sdb'
+          } %}
+          {% set piece = satellites.get(trigger.entity_id, 'salon') %}
+          {{ echo_map.get(piece, 'media_player.echo_dot_gael') }}

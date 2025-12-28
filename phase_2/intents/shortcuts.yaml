@@ -1,26 +1,21 @@
-# ==========================================================
-# RACCOURCIS SPÉCIFIQUES (PHASE 2)
-# ==========================================================
-# Ces commandes déclenchent des actions précises (Prises, Scènes).
-# Elles ne dépendent pas forcément de la position (ex: le café).
-# ==========================================================
-
 language: "fr"
 intents:
-  # ACTION : Lancer la machine à café
-  StartCoffee:
+  StartCoffeeLoop:
     data:
       - sentences:
-          - "Prépare [un] café"
-          - "[fais] [le] café"
-          - "kawa"
-          - "C'est l'heure du café"
-
-  # ACTION : Activer la routine de nuit
-  GoToSleep:
+          - "fais [moi] un café"
+          - "lance la machine à café"
+          - "caféine"
+          - "café"
+          - "jus de chaussette"
+  
+  SetHouseToSleep:
     data:
       - sentences:
-          - "Je vais dormir"
-          - "C'est l'heure [du] dodo"
-          - "Bonne nuit"
-          - "Passe en mode nuit"
+          - "bonne nuit"
+          - "je vais me coucher"
+          - "activation dodo"
+          - "dodo"
+          - "je vais dormir"  
+          - "mode dodo" 
+          - "mode nuit"
