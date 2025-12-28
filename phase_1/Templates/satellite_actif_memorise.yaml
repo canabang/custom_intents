@@ -34,7 +34,7 @@
         satellite_id: "{{ trigger.entity_id }}"
         timestamp: "{{ now().isoformat() }}"
         echo: >
-          {# --- À ADAPTER : Mappez vos pièces vers vos enceintes Alexa/Echo --- #}
+          {# --- À ADAPTER : Mappez vos pièces vers vos enceintes Alexa/Echo ou autres devices tts configuré--- #}
           {% set echo_map = {
             'salon': 'media_player.echo_studio_d',
             'cuisine': 'media_player.echo_show_cuisine',
