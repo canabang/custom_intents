@@ -1,43 +1,56 @@
-# 🧪 Phase 1 : Validation Technique (Salon)
+# 🧪 Phase 1 : Validation Technique Directe
 
-Cette phase est un "bac à sable" conçu pour valider votre installation vocale (micro, STT, Assist) avec une seule pièce : le **Salon**. 
+Cette phase est conçue pour valider votre installation vocale le plus rapidement possible, sans aucune complexité inutile. Elle teste le flux direct : **Voix → Satellite → Action**.
 
-Elle est totalement **autonome** et regroupe tous les fichiers nécessaires pour fonctionner de manière isolée.
+> [!WARNING]
+> **ENTITÉS À ADAPTER :** Les noms d'entités utilisés dans ces fichiers (ex: `light.hue_salon`, `assist_satellite.esp_va_salon...`) sont des exemples basés sur ma propre installation. Vous **devez** les remplacer par vos propres Entity IDs dans les fichiers YAML pour que cela fonctionne chez vous.
 
-## 📂 Structure du Dossier
+## 📂 Structure Simplifiée
 
 *   **[`intents/`](./intents/)** :
-    *   `lumiere_salon.yaml` : Les phrases d'activation (ex: *Lumos*, *Banane*).
-    *   `intent_scripts.yaml` : La logique qui reçoit les ordres.
-*   **[`scripts/`](./scripts/)** :
-    *   `k_2so_confirm_action.yaml` : Personnalité sarcastique.
-    *   `gerer_eclairage.yaml` : Pilotage des lumières.
-    *   `notification_dynamique_alexa.yaml` : Diffusion vocale Alexa.
+    *   `lumiere_salon.yaml` : Toutes les phrases (spécifiques et génériques).
+    *   `intent_scripts.yaml` : Logique d'action directe et validation satellite.
 *   **[`Templates/`](./Templates/)** :
-    *   `presence_piece_basic.yaml` : Capteur de présence simplifié pour le salon.
+    *   `satellite_actif_memorise.yaml` : Détection automatique du satellite qui écoute.
+     Pourquoi ce template ? Je n'ai pas réussi a recuperer directement le nom du satellite qui écoute dans le trigger. Du coup avec ce template, je peux recuperer le nom du satellite qui écoute et le stocker dans une variable.
+     
+## 🚀 Procédure "Express" (2 minutes)
 
-## 🚀 Procédure de Déploiement
-
-### 1. Volet Vocal (Sentences)
-Copiez le contenu du dossier `intents/` (hors `intent_scripts.yaml`) vers :
+### 1. Lumières salon (Sentences)
+Copiez les fichiers `.yaml` du dossier `intents/` (SAUF `intent_scripts.yaml`) vers :
 - `/share/speech-to-phrase/custom_sentences/fr/`
 - `/config/custom_sentences/fr/`
 *Puis redémarrez l'add-on Speech-to-Phrase.*
 
-### 2. Volet Scripts (Via l'Interface HA)
-Les scripts ne sont pas gérés par fichier. Pour chaque fichier dans le dossier `scripts/` :
-1. Allez dans **Paramètres > Automatisations et scènes > Scripts**.
-2. Créez un nouveau script, passez en **Mode YAML** (via les 3 points en haut à droite).
-3. Copiez-collez le contenu du fichier YAML correspondant.
-
-### 3. Volet Cœur (Via configuration.yaml)
-Ajoutez ces lignes dans votre `configuration.yaml` pour lier les fichiers d'intents et de templates :
+### 2. Configuration
+Ajoutez ces lignes dans votre `configuration.yaml` :
 
 ```yaml
 intent_script: !include intent_scripts.yaml
 template: !include template.yaml
 ```
-*Note : Assurez-vous que vos fichiers `intent_scripts.yaml` et `template.yaml` sont bien placés à la racine de votre dossier `/config/`.* et ajouter le contenu de presence_piece_basic.yaml dans votre template.yaml
 
-### 4. Test Final
-Dites simplement : **"Banane"** ou **"Allume le salon"**. Si K-2SO vous répond avec sarcasme et allume la lumière, votre base technique est validée ! 🍌💡
+1.  Copiez le contenu de `intents/intent_scripts.yaml` dans votre fichier `/config/intent_scripts.yaml`.
+2.  Copiez le contenu de `Templates/satellite_actif_memorise.yaml` dans votre fichier `/config/template.yaml`.
+
+### 3. Redémarrage
+Redémarrez Home Assistant (ou rechargez les "Intents" et les "Templates").
+
+> [!IMPORTANT]
+> Avant de tester, assurez-vous d'avoir bien ouvert les fichiers YAML et remplacé les `entity_id` par les vôtres (surtout dans `intent_scripts.yaml` et `satellite_actif_memorise.yaml`).
+
+## 🧪 Tests de Validation
+
+### Test A : Le Micro Fonctionne
+Dites : **"Banane"**.
+- ✅ La lumière du **Salon** s'allume.
+- ✅ Une notification HA confirme l'ordre.
+
+### Test B : Le Satellite est Détecté
+Allez dans une pièce (ex: Cuisine) et dites : **"Allume la lumière"**.
+- ✅ La lumière du **Salon** s'allume (cible fixe pour Phase 1).
+- ✅ La notification HA doit indiquer : **"Allumé via satellite : cuisine"**.
+
+---
+
+**Une fois que ces deux tests réussissent, votre base technique est 100% validée. Vous êtes prêt pour la Phase 2 !** 🎯

@@ -1,42 +1,36 @@
-# Logique d'exécution des intents (Phase 1 : Salon)
-# Ce fichier définit les actions à effectuer quand une phrase est reconnue.
+# ==========================================================
+# LOGIQUE DES INTENTS - PHASE 1 (CONSOLIDÉ)
+# ==========================================================
+# Cette version utilise uniquement le Salon comme cible.
+# Elle valide simultanément le micro et la détection satellite.
+# ==========================================================
 
 TurnOnSalonLight:
   action:
-    # 1. Action physique : Allumer la lumière via le script de gestion centralisé
-    - service: script.gerer_eclairage
-      data:
-        # DATA : On force la pièce "salon" pour cette phase de validation technique.
-        # - 'piece' : Destination fixe (salon)
-        # - 'source' : vocal_onoff (permet de contourner les blocages auto)
-        # - 'action' : on (ordre d'allumage)
-        piece: "salon"
-        source: "vocal_onoff"
-        action: "on"
+    - variables:
+        satellite: "{{ states('sensor.satellite_actif_memorise') }}"
     
-    # 2. Retour vocal : Lancement asynchrone du script K-2SO
-    - service: script.turn_on
+    # --- À ADAPTER : Remplacez par votre entité de lumière ---
+    - service: light.turn_on
       target:
-        entity_id: script.k_2so_confirm_action
+        entity_id: light.hue_salon
+    # -------------------------------------------------------
+    - service: persistent_notification.create
       data:
-        variables:
-          # VARIABLE : Le texte qui sera utilisé pour générer le sarcasme de K-2SO
-          description: "allumé le salon"
+        title: "💡 Salon Allumé"
+        message: "Cible : Salon | Satellite : **{{ satellite }}**"
 
 TurnOffSalonLight:
   action:
-    # 1. Action physique : Éteindre la lumière
-    - service: script.gerer_eclairage
-      data:
-        # DATA : Paramètres pour l'extinction au salon.
-        piece: "salon"
-        source: "vocal_onoff"
-        action: "off"
+    # --- À ADAPTER : Remplacez par votre entité de lumière ---
+    - variables:
+        satellite: "{{ states('sensor.satellite_actif_memorise') }}"
     
-    # 2. Retour vocal : Confirmation par K-2SO
-    - service: script.turn_on
+    - service: light.turn_off
       target:
-        entity_id: script.k_2so_confirm_action
+        entity_id: light.hue_salon
+    # -------------------------------------------------------
+    - service: persistent_notification.create
       data:
-        variables:
-          description: "éteint le salon"
+        title: "🌑 Salon Éteint"
+        message: "Cible : Salon | Satellite : **{{ satellite }}**"

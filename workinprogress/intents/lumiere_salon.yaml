@@ -1,0 +1,32 @@
+# ==========================================================
+# SENTENCES EXPÉRIMENTALES : DÉTECTION PAR SATELLITE
+# ==========================================================
+# Test de la détection contextuelle via satellite_id
+# ==========================================================
+
+language: "fr"
+intents:
+  # Intent de diagnostic pour vérifier satellite_id
+  DiagnosticSatellite:
+    data:
+      - sentences:
+          - "diagnostic satellite"
+          - "quel satellite"
+          - "où suis-je"
+          - "test satellite"
+          - "tarte aux pommes"
+  
+  # Commandes contextuelles (détection auto de la pièce)
+  TurnOnContextualLight:
+    data:
+      - sentences:
+          - "allume [la] lumière"
+          - "lumos"
+          - "éclaire moi"
+  
+  TurnOffContextualLight:
+    data:
+      - sentences:
+          - "éteins [la] lumière"
+          - "nox"
+          - "il va faire tout noir"
