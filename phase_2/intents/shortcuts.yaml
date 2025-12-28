@@ -16,7 +16,9 @@ intents:
           - "jus de chaussette"
           - "overclocking humain"
           - "recharge de batterie"
-          - "syntax error: need coffee"
+          - "erreur de syntaxe café requis"
+          - "earl grey brûlant"
+          - "injection de caféine"
   
   SetHouseToSleep:
     data:
@@ -29,5 +31,7 @@ intents:
           - "mode dodo" 
           - "mode nuit"
           - "hibernation"
-          - "shutdown -h now"
+          - "extinction immédiate"
           - "fin de session"
+          - "entrée en stase"
+          - "mode régénération"

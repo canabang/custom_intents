@@ -1,33 +1,36 @@
-# 🤖 Custom Intents : Projet K-2SO
+# 🤖 Assistant Vocal K-2SO : Hub Central
 
-Bienvenue dans le dépôt centralisé du projet **K-2SO**. Ce dépôt contient l'intégralité des composants nécessaires pour transformer votre Home Assistant en un assistant vocal intelligent, contextuel et avec du caractère.
+Bienvenue dans le dépôt centralisé du projet **K-2SO**. Ce dépôt contient l'intégralité des composants pour transformer votre Home Assistant en un assistant vocal intelligent, contextuel et avec du caractère.
 
-> [!NOTE]
-> **Configuration Matérielle Déployée :** 1 x BOX-3, 1 x ReSpeaker Kit, 2 x Atom Echo, 4 x LD2410C + 1 x LD2450 (ESPHome), et un parc d'enceintes Amazon Echo (Studio D, Show Cuisine/Chambre, SdB).
+## 🗺️ La Route vers l'Automatisation Totale
 
-## 📂 Structure du Dépôt
+Ce projet est découpé en **Phases** pour vous permettre de construire votre système brique par brique, en validant chaque étape technique avant de passer à la complexité suivante.
 
-L'architecture est modulaire pour faciliter le déploiement et la maintenance :
+### 🧪 [Phase 1 : Validation Technique Directe](./phase_1/)
+**Objectif** : Valider le flux "Voix → Home Assistant" le plus vite possible.
+- **Pourquoi la suivre ?** Pour être sûr que votre micro et vos satellites sont bien reconnus avant de gérer toute la maison.
+- **Ce qu'on teste** : Allumer la lumière du salon depuis n'importe où.
 
-*   **[Phase 1 : Test](./phase_1/)** : Validation technique isolée pour le salon (Sentences + Scripts + Template Basic).
-*   **[Phase 2 : Production](./phase_2/)** : Déploiement complet et contextuel pour toute la maison (Sentences + Scripts + Template Pro).
-*   **[_common.yaml](./_common.yaml)** : Listes de mots partagées pour les sentences vocales.
+### 🧭 [Phase 2 : Modularité & Contexte](./phase_2/)
+**Objectif** : Rendre la maison consciente de votre position.
+- **Pourquoi la suivre ?** Pour ne plus jamais avoir à dire "Allume la lumière **du salon**". Le système détecte où vous êtes et agit localement.
+- **Nouveautés** : Gestion des volets, des groupes "Global" (Toute la maison) et des raccourcis fun.
 
-## 🚀 Démarrage Rapide
-
-> [!TIP]
-> **Nouveau :** Suivez notre **[Tutoriel Complet de A à Z](./TUTORIAL.md)** pour une installation pas à pas !
-
-1.  **Exploration** : Commencez par lire le [README de la Phase 1](./phase_1/README.md) pour valider votre installation technique.
-2.  **Validation** : Validez votre base technique avec la **Phase 1**.
-3.  **Intelligence** : Passez à la **Phase 2** pour une maison contextuelle.
-
-## 🧠 Philosophie du Projet
-
-Ce projet repose sur le principe **DRY** (*Don't Repeat Yourself*) : la logique lourde est centralisée dans des scripts réutilisables, laissant les commandes vocales courtes, propres et faciles à maintenir.
-
-> [!WARNING]
-> **Personnalisation Requise :** Les fichiers contiennent des noms d'entités spécifiques à mon installation (Echo, capteurs, lumières, etc.). Vous devez adapter ces noms pour qu'ils correspondent à vos propres entités Home Assistant.
+### 🧠 [Phase 2.1 : Intelligence d'Éclairage](./phase_2.1/)
+**Objectif** : Passer de simples interrupteurs à une gestion dynamique.
+- **Pourquoi la suivre ?** Pour que vos lumières s'adaptent à l'heure (scènes veilleuses le soir) et aux conditions réelles (soleil, présence).
+- **Technique** : Intégration d'un script de gestion centralisé ultra-complet.
 
 ---
-*Projet développé pour une immersion totale dans l'univers domotique. Bonne configuration !* 🤖🚀
+
+## 🚀 Comment démarrer ?
+
+1.  **Exploration** : Lisez le README de la [Phase 1](./phase_1/README.md).
+2.  **Préparation** : Préparez vos propres `entity_id` (Cibles & Satellites).
+3.  **Déploiement** : Suivez les instructions "Express" de chaque phase dans l'ordre (1 -> 2 -> 2.1).
+
+> [!CAUTION]
+> **Adaptation obligatoire** : Les fichiers contiennent des noms d'entités spécifiques (Echo, Hue, etc.). Vous DEVEZ les remplacer par les vôtres pour que le système fonctionne chez vous.
+
+---
+*Projet développé pour une immersion totale. Préparez-vous pour la Phase 3 (IA & K-2SO)...* 🤖🚀

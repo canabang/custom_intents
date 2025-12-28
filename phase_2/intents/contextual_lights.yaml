@@ -18,6 +18,13 @@ intents:
           - "lumos"
           - "fiat lux"
           - "que la lumière soit"
+          - "engagez"
+          - "en avant toute"
+          - "qu'il en soit ainsi"
+          - "jaffa kree"
+          - "allons-y"
+          - "que la force soit avec moi"
+          - "activez la porte"
   
   TurnOffContextualLight:
     data:
@@ -26,7 +33,10 @@ intents:
           - "extinction"
           - "il va faire tout noir"
           - "nox"
-          - "bravo six going dark"
+          - "bravo six, passage au noir"
+          - "fin de transmission"
+          - "disjonction"
+          - "on coupe le jus"
 
   # ----------------------------------------------------------
   # 2. ACTION GLOBALE : Agit sur toute la maison
@@ -40,6 +50,7 @@ intents:
           - "illuminé"
           - "activation totale"
           - "pleine puissance"
+          - "flashbang"
   
   TurnOffAllLights:
     data:
@@ -50,3 +61,4 @@ intents:
           - "désilluminé"
           - "blackout"
           - "mode furtif"
+          - "nuit noire"

@@ -17,6 +17,8 @@ intents:
           - "que le jour se lève"
           - "déploie les panneaux"
           - "déployer boucliers thermiques"
+          - "ouvre les écoutilles"
+          - "ouvrez l'iris"
   
   TurnOffContextualCover:
     data:
@@ -25,6 +27,10 @@ intents:
           - "descends [le|les] volet[s]"
           - "verrouillage de la soute"
           - "protection anti-atomique"
+          - "levez les boucliers"
+          - "boucliers activés"
+          - "exécutez l'ordre soixante six"
+          - "fermez l'iris"
           
 
   # ----------------------------------------------------------
@@ -38,6 +44,7 @@ intents:
           - "monte tous les volets"
           - "ouvre la maison"
           - "déploiement général"
+          - "libérez la maison"
           
   
   TurnOffAllCovers:
@@ -50,4 +57,5 @@ intents:
           - "ferme la maison"
           - "confinement total"
           - "boucliers au maximum"
+          - "protocole bunker"
 
