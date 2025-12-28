@@ -1,6 +1,9 @@
 # 🤖 Assistant Vocal K-2SO : Hub Central
 
-Bienvenue dans le dépôt centralisé du projet **K-2SO**. Ce dépôt contient l'intégralité des composants pour transformer votre Home Assistant en un assistant vocal intelligent, contextuel et avec du caractère.
+Qui n'a pas rêvé de commander sa maison à la voix, avec ses propres mots et expressions ? 
+Baignant dans l'univers geek depuis toujours et fan inconditionnel de Star Trek, Star Wars, Stargate, Le Seigneur des Anneaux ou encore Doctor Who, mon but était simple : rendre ma maison aussi interactive que le pont de l'Enterprise ou la bibliothèque de Poudlard.
+
+Pouvoir dire « Lumos » pour éclairer une pièce ou transformer son salon en « mode bunker » n'est plus de la science-fiction. À travers ces différentes phases, je vous invite à suivre mon aventure dans la création d'un assistant vocal vraiment personnel, intelligent et avec du caractère.
 
 ## 🏗️ Architecture du Système
 

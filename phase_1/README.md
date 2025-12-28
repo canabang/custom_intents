@@ -1,10 +1,5 @@
 # 🧪 Phase 1 : Validation Technique Directe
 
-Qui n'a pas rêvé de commander sa maison à la voix, avec ses propres mots et expressions ? 
-Baignant dans l'univers geek depuis toujours et fan inconditionnel de Star Trek, Star Wars, Stargate, Le Seigneur des Anneaux ou encore Doctor Who, mon but était simple : rendre ma maison aussi interactive que le pont de l'Enterprise ou la bibliothèque de Poudlard.
-
-Pouvoir dire « Lumos » pour éclairer une pièce ou transformer son salon en « mode bunker » n'est plus de la science-fiction. À travers ces différentes phases, je vous invite à suivre mon aventure dans la création d'un assistant vocal vraiment personnel.
-
 Cette phase est conçue pour valider votre installation vocale le plus rapidement possible, sans aucune complexité inutile. Elle teste le flux direct : **Voix → Satellite → Action**.
 Elle permet aussi de comprendre le fonctionnement de base de l'assistant vocal, des `intent_scripts.yaml` et des `custom_sentences`.
 
