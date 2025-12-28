@@ -12,21 +12,27 @@ intents:
   TurnOnSalonLight:
     data:
       - sentences:
-          - "(allume|active|mets) [la] lumière [du] salon"
-          - "banane"
-          - "allume le salon"
-          - "mets la lumière au salon"
-          - "lumos"
           - "(allume|active|mets) [la] lumière"
           - "éclaire [moi]"
+          - "il fait noir"
+          - "lumos"
+          - "que la lumière soit"
+          - "engagez"
+          - "en avant toute"
+          - "qu'il en soit ainsi"
+          - "jaffa kree"
+          - "allons-y"
+          - "que la force soit avec moi"
+          - "activez la porte"
 
   TurnOffSalonLight:
     data:
       - sentences:
-          - "(éteins|coupe|arrête) [la] lumière [du] salon"
-          - "(éteins|éteint) le salon"
-          - "k_2so dodo"
-          - "coupe la lumière au salon"
-          - "il va faire tout noir"
           - "(éteins|coupe|arrête) [la] lumière"
           - "extinction"
+          - "il va faire tout noir"
+          - "nox"
+          - "bravo six, passage au noir"
+          - "fin de transmission"
+          - "disjonction"
+          - "on coupe le jus"
