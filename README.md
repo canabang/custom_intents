@@ -9,7 +9,7 @@ Voici comment les données circulent entre votre voix et vos appareils :
 ```mermaid
 graph TD
     A["🎤 Voix (Utilisateur)"] -->|Commande| B["🛰️ Satellites ESPHome"]
-    B -->|Audio| C["🏠 HA Assist / Whisper"]
+    B["🛰️ Satellites ESPHome"] -->|Audio| C["🏠 HA Assist / Speech-to-Phrase"]
     C -->|Texte| D{"🎯 Matcher d'Intents"}
     D -->|Pièce Détectée| E["🧠 Template : Satellite Mémorisé"]
     E -->|Contexte| F["📜 Intent Scripts"]
@@ -48,6 +48,14 @@ Ce projet a été développé et testé avec les équipements suivants :
 -  **Microphone Principal** : ReSpeaker Kit.
 -  **Satellites de Zone** : 2 x Atom Echo (ESPHome).
 -  **Sortie Audio** : Amazon Echo (Studio D, Show Cuisine/Chambre, SdB).
+
+---
+
+## 💻 Pré-requis Logiciels
+Pour faire fonctionner ce projet, vous avez besoin de :
+-  **Home Assistant** (Core ou OS).
+-  **Speech-to-Phrase** (Add-on ou conteneur) : C'est le moteur qui transforme votre voix en textes reconnus localement sans passer par le cloud.
+-  **ESPHome** : Pour la gestion de vos satellites (Atom Echo, ReSpeaker, etc.).
 
 ---
 
