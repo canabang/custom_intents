@@ -13,25 +13,25 @@ Cette phase est conçue pour valider votre installation vocale le plus rapidemen
 *   **[`Templates/`](./Templates/)** :
     *   `satellite_actif_memorise.yaml` : Détection automatique du satellite qui écoute.
      Pourquoi ce template ? Je n'ai pas réussi a recuperer directement le nom du satellite qui écoute dans le trigger. Du coup avec ce template, je peux recuperer le nom du satellite qui écoute et le stocker dans une variable.
-     
+
 ## 🚀 Procédure "Express" (2 minutes)
 
 ### 1. Lumières salon (Sentences)
-Copiez les fichiers `.yaml` du dossier `intents/` (SAUF `intent_scripts.yaml`) vers :
+Copiez le fichier `lumiere_salon.yaml` du dossier `intents/` vers :
 - `/share/speech-to-phrase/custom_sentences/fr/`
 - `/config/custom_sentences/fr/`
 *Puis redémarrez l'add-on Speech-to-Phrase.*
 
 ### 2. Configuration
-Ajoutez ces lignes dans votre `configuration.yaml` :
+Ajoutez ces lignes dans votre `configuration.yaml` si elles ne sont pas déjà présentes :
 
 ```yaml
 intent_script: !include intent_scripts.yaml
 template: !include template.yaml
 ```
 
-1.  Copiez le contenu de `intents/intent_scripts.yaml` dans votre fichier `/config/intent_scripts.yaml`.
-2.  Copiez le contenu de `Templates/satellite_actif_memorise.yaml` dans votre fichier `/config/template.yaml`.
+1.  Copiez le contenu de `intents/intent_scripts.yaml` dans votre fichier `/config/intent_scripts.yaml` a creer si necessaire   .
+2.  Copiez le contenu de `Templates/satellite_actif_memorise.yaml` dans votre fichier `/config/template.yaml` a creer si necessaire.
 
 ### 3. Redémarrage
 Redémarrez Home Assistant (ou rechargez les "Intents" et les "Templates").
