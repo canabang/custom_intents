@@ -1,0 +1,37 @@
+# ==========================================================
+# PHRASES : RACCOURCIS & ROUTINES (PHASE 2)
+# ==========================================================
+# Commandes rapides pour les actions quotidiennes.
+# ==========================================================
+
+language: "fr"
+intents:
+  StartCoffeeLoop:
+    data:
+      - sentences:
+          - "fais [moi] un café"
+          - "lance la machine à café"
+          - "caféine"
+          - "café"
+          - "jus de chaussette"
+          - "overclocking humain"
+          - "recharge de batterie"
+          - "erreur de syntaxe café requis"
+          - "earl grey brûlant"
+          - "injection de caféine"
+  
+  SetHouseToSleep:
+    data:
+      - sentences:
+          - "bonne nuit"
+          - "je vais me coucher"
+          - "activation dodo"
+          - "dodo"
+          - "je vais dormir"  
+          - "mode dodo" 
+          - "mode nuit"
+          - "hibernation"
+          - "extinction immédiate"
+          - "fin de session"
+          - "entrée en stase"
+          - "mode régénération"

@@ -1,0 +1,64 @@
+# ==========================================================
+# PHRASES : LUMIÈRES (PHASE 2)
+# ==========================================================
+# Distinction entre commandes locales (contextuelles) et globales.
+# ==========================================================
+
+language: "fr"
+intents:
+  # ----------------------------------------------------------
+  # 1. ACTION CONTEXTUELLE : Agit sur la pièce où vous êtes
+  # ----------------------------------------------------------
+  TurnOnContextualLight:
+    data:
+      - sentences:
+          - "(allume|active|mets) [la] lumière"
+          - "éclaire [moi]"
+          - "il fait noir"
+          - "lumos"
+          - "fiat lux"
+          - "que la lumière soit"
+          - "engagez"
+          - "en avant toute"
+          - "qu'il en soit ainsi"
+          - "jaffa kree"
+          - "allons-y"
+          - "que la force soit avec moi"
+          - "activez la porte"
+  
+  TurnOffContextualLight:
+    data:
+      - sentences:
+          - "(éteins|coupe|arrête) [la] lumière"
+          - "extinction"
+          - "il va faire tout noir"
+          - "nox"
+          - "bravo six, passage au noir"
+          - "fin de transmission"
+          - "disjonction"
+          - "on coupe le jus"
+
+  # ----------------------------------------------------------
+  # 2. ACTION GLOBALE : Agit sur toute la maison
+  # ----------------------------------------------------------
+  TurnOnAllLights:
+    data:
+      - sentences:
+          - "(allume|active|mets) tout"
+          - "(allume|active|mets) toutes les lumières"
+          - "allume la maison"
+          - "illuminé"
+          - "activation totale"
+          - "pleine puissance"
+          - "flashbang"
+  
+  TurnOffAllLights:
+    data:
+      - sentences:
+          - "(éteins|coupe|arrête) tout"
+          - "(éteins|coupe|arrête) toutes les lumières"
+          - "éteins la maison"
+          - "désilluminé"
+          - "blackout"
+          - "mode furtif"
+          - "nuit noire"

@@ -1,0 +1,228 @@
+# ==========================================================
+# LOGIQUE DES INTENTS - PHASE 2.2 (AVEC K-2SO)
+# ==========================================================
+# Cette phase intègre K-2SO pour des réponses vocales personnalisées
+# sur chaque action domotique. Le script 'gerer_eclairage' est conservé
+# pour l'intelligence des scènes, et K-2SO ajoute sa personnalité.
+# ==========================================================
+
+# ----------------------------------------------------------
+# MODULE 1 : ÉCLAIRAGE (VIA SCRIPT + K-2SO)
+# ----------------------------------------------------------
+
+# --- CONTEXTUEL (Pièce actuelle) ---
+TurnOnContextualLight:
+  action:
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    # 1. Exécution de l'action via le script intelligent
+    - service: script.gerer_eclairage
+      data:
+        piece: "{{ piece }}"
+        source: vocal_onoff
+        action: "on"
+    
+    # 2. K-2SO génère un ordre sec et sarcastique
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "lumiere_allumee"
+        details: "{{ piece }}"
+        consigne: "IMPÉRATIF : MAXIMUM 10 MOTS. Sarcastique."
+      response_variable: generated_message
+    
+    # 3. Notification vocale via Alexa
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+TurnOffContextualLight:
+  action:
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: script.gerer_eclairage
+      data:
+        piece: "{{ piece }}"
+        source: vocal_onoff
+        action: "off"
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "lumiere_eteinte"
+        details: "{{ piece }}"
+        consigne: "IMPÉRATIF : MAXIMUM 10 MOTS. Économies d'énergie."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+# --- GLOBAL (Toute la maison) ---
+TurnOnAllLights:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: light.turn_on
+      target:
+        entity_id: light.hue_all
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "toutes_lumieres_allumees"
+        consigne: "IMPÉRATIF : MAXIMUM 10 MOTS. Sarcastique."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+TurnOffAllLights:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: light.turn_off
+      target:
+        entity_id: light.hue_all
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "toutes_lumieres_eteintes"
+        consigne: "IMPÉRATIF : MAXIMUM 10 MOTS. Bien joué."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+
+# ----------------------------------------------------------
+# MODULE 2 : VOLETS (DIRECT + K-2SO)
+# ----------------------------------------------------------
+
+TurnOnContextualCover:
+  action:
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: cover.open_cover
+      target:
+        entity_id: "cover.vol{{ piece }}"
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "volet_ouvert"
+        details: "{{ piece }}"
+        consigne: "IMPÉRATIF : MAXIMUM 10 MOTS. Enfin du jour."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+TurnOffContextualCover:
+  action:
+    - variables:
+        piece: "{{ states('sensor.satellite_actif_memorise') | lower }}"
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: cover.close_cover
+      target:
+        entity_id: "cover.vol{{ piece }}"
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "volet_ferme"
+        details: "{{ piece }}"
+        consigne: "IMPÉRATIF : MAXIMUM 10 MOTS. Mode bunker."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+TurnOnAllCovers:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: cover.open_cover
+      target:
+        entity_id: cover.volets
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "tous_volets_ouverts"
+        consigne: "IMPÉRATIF : MAXIMUM 10 MOTS. Remarque sur la visibilité."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+TurnOffAllCovers:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: cover.close_cover
+      target:
+        entity_id: cover.volets
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "tous_volets_fermes"
+        consigne: "IMPÉRATIF : MAXIMUM 10 MOTS. Facture trop chère."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+
+# ----------------------------------------------------------
+# MODULE 3 : RACCOURCIS (DIRECT + K-2SO)
+# ----------------------------------------------------------
+
+StartCoffeeLoop:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: switch.turn_on
+      target:
+        entity_id: switch.priscafe
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "cafe_pret"
+        consigne: "10 MOTS MAX : Dépendance humaine."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
+
+SetHouseToSleep:
+  action:
+    - variables:
+        satellite_id: "{{ state_attr('sensor.satellite_actif_memorise', 'satellite_id') }}"
+    
+    - service: automation.trigger
+      target:
+        entity_id: automation.mode_dodo_2
+    
+    - action: script.k_2so_generateur_de_message
+      data:
+        mission: "mode_dodo"
+        consigne: "10 MOTS MAX : Bonne nuit Star Wars."
+      response_variable: generated_message
+    
+    - action: script.notification_alexa
+      data:
+        message: "{{ generated_message.data }}"
