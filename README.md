@@ -17,7 +17,9 @@ graph TD
     D -->|Pièce Détectée| E["🧠 Template : Satellite Mémorisé"]
     E -->|Contexte| F["📜 Intent Scripts"]
     F -->|Action| G["💡 Appareils / Lumières / Volets"]
-    F -->|Notification| H["📱 App HA / Persistent Notif"]
+    F -->|Demande IA| I["🤖 Ollama / Llama 3.2 (Local)"]
+    I -->|Réponse Sarcastique| F
+    F -->|Notification Vocale| H["🔊 Alexa / Amazon Echo"]
 ```
 
 > [!TIP]
@@ -38,7 +40,7 @@ Avant de commencer, il est crucial de comprendre les piliers du projet :
 | **Phase 1** | [Validation Technique](./phase_1/) | Fiabilité | Allumage direct et validation du flux. |
 | **Phase 2** | [Modularité & Contexte](./phase_2/) | Pièces | Détection automatique de la pièce (Lumières & Volets). |
 | **Phase 2.1** | [Intelligence Avancée](./phase_2.1/) | Scènes | Choix automatique des scènes (Jour/Nuit/Veilleuse). |
-| **Phase 3** | **IA & Personnalité** | **Caractère** | **Intégration Gemini & Humour K-2SO.** |
+| **Phase 2.2** | [IA & Personnalité](./phase_2.2/) | **Caractère** | **Intégration Ollama & Humour K-2SO (100% Local).** |
 
 ---
 
@@ -54,22 +56,35 @@ Avant de commencer, il est crucial de comprendre les piliers du projet :
 **Objectif** : Gestion dynamique et scènes intelligentes.
 - **Technique** : Intégration du script `gerer_eclairage`.
 
+### 🤖 [Phase 2.2 : Personnalité K-2SO (IA Locale)](./phase_2.2/)
+**Objectif** : Ajouter un caractère sarcastique à chaque interaction vocale.
+- **Pourquoi la suivre ?** Pour transformer un simple robot en un assistant (péniblement) humain.
+- **Technique** : Utilisation d'**Ollama** (Llama 3.2) hébergé dans un **conteneur Docker sur un NAS Open Media Vault (OMV)**.
+- **Performance** : Utilisation du Passthrough GPU (GTX 1050 Ti) pour une confidentialité totale et un fonctionnement offline.
+
 ---
 
 ## 🛠️ Configuration Matérielle
 Ce projet a été développé et testé avec les équipements suivants :
--  **Serveur Central** : BOX-3 (Home Assistant OS).
--  **Microphone Principal** : ReSpeaker Kit.
--  **Satellites de Zone** : 2 x Atom Echo (ESPHome).
+-  **Serveur Domotique** : Mini-PC (CPU Intel N150, 16 Go de RAM) sous Home Assistant OS.
+-  **Serveur IA & Docker** : NAS sous **Open Media Vault (OMV)**.
+-  **GPU IA** : NVIDIA GTX 1050 Ti 4GB (Passthrough Docker).
+-  **Satellites de Zone** :
+    - Salon : **ESP32-Box S3** (ESPHome).
+    - Chambre : **ReSpeaker Kit** (ESPHome).
+    - Autres : 2 x Atom Echo (ESPHome).
 -  **Sortie Audio** : Amazon Echo (Studio D, Show Cuisine/Chambre, SdB).
 
 ---
 
 ## 💻 Pré-requis Logiciels
 Pour faire fonctionner ce projet, vous avez besoin de :
--  **Home Assistant** (Core ou OS).
--  **Speech-to-Phrase** (Add-on ou conteneur) : C'est le moteur qui transforme votre voix en textes reconnus localement sans passer par le cloud.
--  **ESPHome** : Pour la gestion de vos satellites (Atom Echo, ReSpeaker, etc.).
+- **[Home Assistant](https://www.home-assistant.io/)** (Core ou OS).
+- **[Speech-to-Phrase](https://github.com/OHF-voice/speech-to-phrase)** : Moteur de reconnaissance locale (STT).
+- **[ESPHome](https://esphome.io/)** : Gestion des satellites (ESP32-Box, Atom Echo, etc.).
+- **[Alexa Media Player](https://github.com/alandtse/alexa_media_player)** : Intégration pour la sortie audio.
+- **[Ollama](https://www.home-assistant.io/integrations/ollama)** (ou **[Gemini](https://www.home-assistant.io/integrations/gemini)**) : Moteur d'IA conversationnelle.
+- **[Piper](https://github.com/OHF-Voice/piper1-gpl)** : Add-on TTS local (optionnel si usage Alexa).
 
 ---
 
@@ -77,10 +92,10 @@ Pour faire fonctionner ce projet, vous avez besoin de :
 
 1.  **Exploration** : Lisez le README de la [Phase 1](./phase_1/README.md).
 2.  **Préparation** : Préparez vos propres `entity_id` (Cibles & Satellites).
-3.  **Déploiement** : Suivez les instructions "Express" dans l'ordre (1 -> 2 -> 2.1).
+3.  **Déploiement** : Suivez les instructions "Express" dans l'ordre (1 -> 2 -> 2.1 -> 2.2).
 
 > [!CAUTION]
 > **Adaptation obligatoire** : Vous DEVEZ remplacer les identifiants d'entités par les vôtres pour que le système soit opérationnel.
 
 ---
-*Projet développé pour une immersion totale. Préparation pour la Phase 3 (IA & K-2SO)...* 🤖🚀
+*Projet développé pour une immersion totale. La Phase 2.2 (IA K-2SO) est la dernière étape actuelle et fonctionne à 100% en local !* 🤖🚀

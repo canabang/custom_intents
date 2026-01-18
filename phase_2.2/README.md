@@ -43,10 +43,12 @@ Le script `notification_alexa` doit être configuré pour gérer :
 - La gestion du volume
 - La pause/reprise de Spotify
 
-### 3. Intégration Ollama
-- Ollama doit être installé et accessible depuis Home Assistant
-- Modèle recommandé : `llama3.2:latest` (rapide, léger, créatif)
-- Configuration : `keep_alive: -1` pour des réponses instantanées
+- Configuration : `keep_alive: -1` pour que le modèle reste en VRAM.
+- Optimisation GPU :
+  ```bash
+  OLLAMA_MAX_LOADED_MODELS=1
+  OLLAMA_NUM_PARALLEL=1
+  ```
 
 ## 🚀 Installation
 
@@ -120,7 +122,7 @@ Si vous préférez revenir aux notifications standards :
 
 ## 📊 Performance
 
-- **Latence ajoutée** : ~0.5-1s (génération IA + TTS)
+- **Latence constatée** : ~2.5s (avec NVIDIA GTX 1050 Ti 4GB).
 - **Fiabilité** : Actions exécutées AVANT l'IA (pas de blocage)
 - **Créativité** : Réponses variées à chaque fois
 
